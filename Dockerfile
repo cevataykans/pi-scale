@@ -9,7 +9,9 @@ RUN pip install websockets
 
 FROM library AS app
 WORKDIR /pi-scale
-COPY hx711.py server.py scale.py static templates ./
+COPY hx711.py server.py scale.py ./
+COPY static ./static
+COPY templates ./templates
 VOLUME [ "/dev/mem" ]
 EXPOSE 8000
 CMD ["uvicorn", "server:app"]
