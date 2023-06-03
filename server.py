@@ -1,6 +1,7 @@
 import sys
 import time
 import threading
+import json
 
 from scale import Scale
 from typing import Union
@@ -52,7 +53,9 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            await websocket.send_text("{ \"value\": {} }".format(cur_weight))
+            await websocket.send_text(json.dumps({
+                "value": cur_weight
+            }))
             time.sleep(0.5)
     except WebSocketDisconnect:
         print("Client disconnected")
@@ -61,5 +64,5 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/api/v1/scale", status_code=200)
 def tare_again():
     scale.tare()
-    print("Scale req")
+    print("Scale")
     return {}
