@@ -54,7 +54,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             await websocket.send_text(f"Message text was: {data}")
             time.sleep(0.5)
-    except WebSocketDisconnext:
+    except WebSocketDisconnect:
         print("Client disconnected")
 
 
