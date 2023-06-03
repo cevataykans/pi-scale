@@ -220,7 +220,7 @@ class HX711:
        else:
           # If times is even we have to take the arithmetic mean of
           # the two middle values.
-          midpoint = len(valueList) / 2
+          midpoint = len(valueList) // 2
           return sum(valueList[midpoint:midpoint+2]) / 2.0
 
 
