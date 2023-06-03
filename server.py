@@ -51,11 +51,17 @@ def shutdown_event():
     thread.join()
     scale.clean()
 
-
 @app.get("/", response_class=HTMLResponse)
 async def read_item(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/api/v1/scale", status_code=200)
+async def tare_again():
+    print("Tare...")
+    tare_lock.acquire()
+    scale.tare()
+    tare_lock.release()
+    return "Tare Success"
 
 from fastapi import WebSocket
 @app.websocket("/api/v1/ws")
@@ -69,12 +75,3 @@ async def websocket_endpoint(websocket: WebSocket):
             time.sleep(0.2)
     except WebSocketDisconnect:
         print("Client disconnected")
-
-
-@app.post("/api/v1/scale", status_code=200)
-def tare_again():
-    print("Tare...")
-    tare_lock.acquire()
-    scale.tare()
-    tare_lock.release()
-    return "Tare Success"

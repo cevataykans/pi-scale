@@ -16,7 +16,7 @@
 
         // Send an empty POST request to a server address
         async function sendPostRequest() {
-            var json = await fetch("http://192.168.0.17:8000/api/v1/scale", { method: "POST" });
+            var json = await fetch("http://192.168.0.17:8000/api/v1/scale", { method: "GET" });
             print(json);
             var text = await json.text();
             print(text);
