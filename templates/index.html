@@ -5,7 +5,7 @@
     <title>WebSocket Counter</title>
     <script>
         // Establish a WebSocket connection
-        var socket = new WebSocket("ws://192.168.0.17/api/v1/ws");
+        var socket = new WebSocket("ws://192.168.0.17:8000/api/v1/ws");
 
         // Handle incoming WebSocket messages
         socket.onmessage = function (event) {
@@ -15,7 +15,7 @@
 
         // Send an empty POST request to a server address
         function sendPostRequest() {
-            fetch("http://192.168.0.17/api/v1/scale", { method: "POST" });
+            fetch("http://192.168.0.17:8000/api/v1/scale", { method: "POST" });
         }
     </script>
 </head>
