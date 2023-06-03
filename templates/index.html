@@ -16,7 +16,16 @@
 
         // Send an empty POST request to a server address
         function sendPostRequest() {
-            fetch("http://192.168.0.17:8000/api/v1/scale", { method: "POST" });
+            fetch("http://192.168.0.17:8000/api/v1/scale", { method: "POST" })
+                .then((data) => {
+                    if (data.ok) {
+                        print(data.text().then((text) => {
+                            return text;
+                        }))
+                    } else {
+                        print(data.statusText);
+                    }
+                });
         }
     </script>
 </head>

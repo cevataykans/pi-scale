@@ -69,7 +69,6 @@ async def websocket_endpoint(websocket: WebSocket):
             time.sleep(0.2)
     except WebSocketDisconnect:
         print("Client disconnected")
-    print("I am outta here")
 
 
 @app.post("/api/v1/scale", status_code=200)
@@ -77,4 +76,4 @@ def tare_again():
     tare_lock.acquire()
     scale.tare()
     tare_lock.release()
-    return {}
+    return "Tare Success"

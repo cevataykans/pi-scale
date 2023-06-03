@@ -10,6 +10,7 @@ class Scale:
         self.hx.tare()
 
     def tare(self):
+        self.hx.set_reference_unit(435.224)
         self.hx.reset()
         self.hx.tare()
     
