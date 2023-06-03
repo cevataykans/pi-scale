@@ -34,7 +34,10 @@ exit = False
 def scale_thread():
     while not exit:
         cur_weight = scale.weight()
+        print("Cur weight: ", cur_weight)
         time.sleep(0.1)
+
+threading.Thread(target=scale_thread, name="Scale Thread").start()
 
 @app.on_event("shutdown")
 def shutdown_event():
