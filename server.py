@@ -32,16 +32,20 @@ scale = Scale()
 cur_weight = 0
 exit = False
 def scale_thread():
+    global cur_weight
+    global exit
     while not exit:
         cur_weight = scale.weight()
         time.sleep(0.1)
 
-threading.Thread(target=scale_thread, name="Scale Thread").start()
+thread = threading.Thread(target=scale_thread, name="Scale Thread")
+thread.start()
 
 @app.on_event("shutdown")
 def shutdown_event():
-    scale.clean()
     exit = True
+    thread.join()
+    scale.clean()
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -55,12 +59,14 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
+            print("Loop")
             await websocket.send_text(json.dumps({
                 "value": cur_weight
             }))
             time.sleep(0.5)
     except WebSocketDisconnect:
         print("Client disconnected")
+    print("I am outta here")
 
 
 @app.post("/api/v1/scale", status_code=200)
