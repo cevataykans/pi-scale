@@ -73,6 +73,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @app.post("/api/v1/scale", status_code=200)
 def tare_again():
+    print("Tare...")
     tare_lock.acquire()
     scale.tare()
     tare_lock.release()
