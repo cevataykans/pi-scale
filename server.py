@@ -31,11 +31,14 @@ app.add_middleware(
 scale = Scale()
 cur_weight = 0
 exit = False
+tare_lock = threading.Lock()
 def scale_thread():
     global cur_weight
     global exit
     while not exit:
+        tare_lock.acquire()
         cur_weight = round(scale.weight())
+        tare_lock.release()
         time.sleep(0.1)
 
 thread = threading.Thread(target=scale_thread, name="Scale Thread")
@@ -63,7 +66,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_text(json.dumps({
                 "value": cur_weight
             }))
-            time.sleep(0.5)
+            time.sleep(0.2)
     except WebSocketDisconnect:
         print("Client disconnected")
     print("I am outta here")
@@ -71,5 +74,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @app.post("/api/v1/scale", status_code=200)
 def tare_again():
+    tare_lock.acquire()
     scale.tare()
+    tare_lock.release()
     return {}
