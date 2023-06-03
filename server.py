@@ -1,4 +1,5 @@
 import sys
+from scale import Scale
 
 scale = Scale()
 scale.tare()

@@ -1,3 +1,4 @@
+from hx711 import HX711
 
 class Scale:
 
