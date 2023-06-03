@@ -35,7 +35,7 @@ def scale_thread():
     global cur_weight
     global exit
     while not exit:
-        cur_weight = scale.weight()
+        cur_weight = round(scale.weight())
         time.sleep(0.1)
 
 thread = threading.Thread(target=scale_thread, name="Scale Thread")
