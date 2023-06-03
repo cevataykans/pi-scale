@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Counter</title>
+    <script>
+        // Establish a WebSocket connection
+        var socket = new WebSocket("ws://192.168.0.17/api/v1/ws");
+
+        // Handle incoming WebSocket messages
+        socket.onmessage = function (event) {
+            var counterValue = JSON.parse(event.data).value;
+            document.getElementById("counter").textContent = counterValue;
+        };
+
+        // Send an empty POST request to a server address
+        function sendPostRequest() {
+            fetch("http://192.168.0.17/api/v1/scale", { method: "POST" });
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Counter Value: <span id="counter">0</span></h1>
+    <button onclick="sendPostRequest()">Tare</button>
+</body>
+
+</html>

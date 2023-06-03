@@ -9,7 +9,10 @@ VOLUME [ "/dev/mem" ]
 RUN pip install numpy
 RUN pip install Rpi.GPIO
 RUN pip install fastapi
+RUN pip install uvicorn
+RUN pip install Jinja2
+RUN pip install websockets
 
-EXPOSE 80
+EXPOSE 8000
 
-CMD ["python3", "server.py"]
+CMD ["uvicorn", "server:app"]
