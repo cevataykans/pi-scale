@@ -43,6 +43,7 @@ thread.start()
 
 @app.on_event("shutdown")
 def shutdown_event():
+    global exit
     exit = True
     thread.join()
     scale.clean()
@@ -59,7 +60,6 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            print("Loop")
             await websocket.send_text(json.dumps({
                 "value": cur_weight
             }))

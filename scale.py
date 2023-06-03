@@ -6,6 +6,8 @@ class Scale:
         self.hx = HX711(data_pin, clock_pin)
         self.hx.set_reading_format("MSB", "MSB")
         self.hx.set_reference_unit(435.224)
+        self.hx.reset()
+        self.hx.tare()
 
     def tare(self):
         self.hx.reset()
