@@ -34,7 +34,6 @@ exit = False
 def scale_thread():
     while not exit:
         cur_weight = scale.weight()
-        print("Cur weight: ", cur_weight)
         time.sleep(0.1)
 
 threading.Thread(target=scale_thread, name="Scale Thread").start()
@@ -67,5 +66,4 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/api/v1/scale", status_code=200)
 def tare_again():
     scale.tare()
-    print("Scale")
     return {}

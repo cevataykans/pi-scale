@@ -15,6 +15,7 @@ class Scale:
         self.hx.reset()
         val = self.hx.get_weight(10)
         print("Def: ", val, " Rounded: ", round(val))
+        return val
 
     def clean(self):
         import RPi.GPIO as GPIO
