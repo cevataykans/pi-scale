@@ -2,7 +2,7 @@ FROM python
 
 WORKDIR /pi-scale
 
-COPY hx711.py server.py scale.py ./
+COPY hx711.py server.py scale.py static templates ./
 
 VOLUME [ "/dev/mem" ]
 
