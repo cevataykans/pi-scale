@@ -9,6 +9,7 @@
 
         // Handle incoming WebSocket messages
         socket.onmessage = function (event) {
+            console.log(event.data);
             var counterValue = JSON.parse(event.data).value;
             document.getElementById("counter").textContent = counterValue;
         };

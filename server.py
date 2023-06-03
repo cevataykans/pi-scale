@@ -52,7 +52,7 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            await websocket.send_text(f"Message text was: {data}")
+            await websocket.send_text("{ \"value\": {} }".format(cur_weight))
             time.sleep(0.5)
     except WebSocketDisconnect:
         print("Client disconnected")
@@ -61,4 +61,5 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/api/v1/scale", status_code=200)
 def tare_again():
     scale.tare()
+    print("Scale req")
     return {}
