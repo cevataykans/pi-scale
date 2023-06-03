@@ -29,10 +29,16 @@ app.add_middleware(
 
 scale = Scale()
 cur_weight = 0
+exit = False
 def scale_thread():
-    while True:
+    while not exit:
         cur_weight = scale.weight()
         time.sleep(0.1)
+
+@app.on_event("shutdown")
+def shutdown_event():
+    scale.clean()
+    exit = True
 
 
 @app.get("/", response_class=HTMLResponse)

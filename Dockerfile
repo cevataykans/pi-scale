@@ -14,4 +14,4 @@ COPY static ./static
 COPY templates ./templates
 VOLUME [ "/dev/mem" ]
 EXPOSE 8000
-CMD ["uvicorn", "server:app"]
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0"]
