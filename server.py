@@ -1,4 +1,5 @@
 import sys
+import time
 from scale import Scale
 
 scale = Scale()
