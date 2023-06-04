@@ -2,31 +2,108 @@
 <html>
 
 <head>
-    <title>WebSocket Counter</title>
+    <title>Coffee Bean Scale</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #counter {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            height: 5vh;
+
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            width: auto;
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-container img {
+            height: 40vh;
+            width: auto;
+        }
+
+        .popup {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 255, 60, 0.2);
+            z-index: 9999;
+            display: none;
+        }
+    </style>
     <script>
         // Establish a WebSocket connection
         var socket = new WebSocket("ws://192.168.0.17:8000/api/v1/ws");
 
         // Handle incoming WebSocket messages
         socket.onmessage = function (event) {
-            console.log(event.data);
             var counterValue = JSON.parse(event.data).value;
             document.getElementById("counter").textContent = counterValue;
         };
 
         // Send an empty POST request to a server address
         async function sendPostRequest() {
-            var json = await fetch("http://192.168.0.17:8000/api/v1/scale", { method: "GET" });
-            print(json);
+            console.log("sending req");
+            var json = await fetch("http://192.168.0.17:8000/api/v1/tare", { method: "POST" });
+            console.log(json);
             var text = await json.text();
-            print(text);
+            showPopup(text);
+        }
+
+        function showPopup(message) {
+            var popup = document.getElementById("popup");
+            popup.textContent = message;
+            popup.style.display = "block";
+
+            setTimeout(function () {
+                popup.style.display = "none";
+            }, 3000);
         }
     </script>
 </head>
 
 <body>
-    <h1>Counter Value: <span id="counter">0</span></h1>
-    <button onclick="sendPostRequest()">Tare</button>
+    <div id="popup" class="popup"></div>
+    <div class="image-container">
+        <img src="/static/img/beans.jpg" alt="Beans">
+    </div>
+    <h1>Weight: <span id="counter">0</span> grams</h1>
+    <div class="button-container">
+        <button onclick="sendPostRequest()">Tare</button>
+    </div>
+    <div class="image-container">
+        <img src="/static/img/moccomaster.jpg" alt="Coffee Machine">
+    </div>
 </body>
 
 </html>
