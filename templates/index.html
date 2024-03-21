@@ -90,12 +90,7 @@
                 delete socket;
                 var curTimeout = Math.min(10000, timeout + timeout);
                 console.log("Timeout is: ", curTimeout);
-                setTimeout(connect(curTimeout), curTimeout);
-            }
-
-            socket.onerror = function (err) {
-                console.error("Socket had an error: ", err.message, " Closing socket...");
-                socket.close();
+                setTimeout(connect, curTimeout, curTimeout);
             }
         }
 
