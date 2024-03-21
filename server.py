@@ -49,7 +49,7 @@ def scale_thread():
 
     while not exit:
         tare_lock.acquire()
-        cur_weight = round(scale.weight(), 2)
+        cur_weight = round(scale.measure(), 2)
         tare_lock.release()
         time.sleep(scale_interval)
 

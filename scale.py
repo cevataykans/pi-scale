@@ -19,6 +19,7 @@ class Scale:
         self.hx.set_reference_unit(435.224)
         self.hx.reset()
         self.hx.tare(self.frequency)
+        self.ref = True
 
     def weight(self):
         return self.hx.get_weight(self.frequency)
