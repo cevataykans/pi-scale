@@ -8,13 +8,14 @@ class Scale:
         
         self.weight_frequency = 10
         self.weight_threshold = 1
-        self.ref_weight = 0
+        self.ref = False
         
         self.hx = HX711(data_pin, clock_pin)
         self.hx.set_reading_format("MSB", "MSB")
         self.hx.set_reference_unit(435.224)
         self.hx.reset()
         self.hx.tare()
+        self.ref_weight = 0
 
     def tare(self):
         time.sleep(1)
@@ -23,7 +24,7 @@ class Scale:
         self.hx.reset()
         self.hx.tare()
 
-    def weight(self, times = 15):
+    def weight(self, times = 5):
         return self.hx.get_weight(times)
     
     def measure(self):
