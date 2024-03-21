@@ -89,6 +89,7 @@
             socket.onclose = function (event) {
                 delete socket;
                 var curTimeout = Math.min(10000, timeout + timeout);
+                console.log("Timeout is: ", curTimeout);
                 setTimeout(connect(curTimeout), curTimeout);
             }
 
