@@ -13,6 +13,7 @@ class Scale:
 
         self.ref = False
         self.frequency = 15
+        self.weight_threshold = 1
 
     def tare(self):
         time.sleep(1)
@@ -26,11 +27,11 @@ class Scale:
     def measure(self):
         self.hx.reset()
         val = self.weight()
-        if val < -0.1 and self.ref:
+        if val < -self.weight_threshold and self.ref:
             self.tare()
             self.ref = False
             val = self.weight()
-        elif val > 0 and not self.ref:
+        elif val > -self.weight_threshold and not self.ref:
             self.tare()
             self.ref = True
         return val
