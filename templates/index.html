@@ -18,7 +18,8 @@
             justify-content: center;
         }
 
-        #counter {
+        #counter,
+        #refCounter {
             font-size: 48px;
             margin-bottom: 20px;
         }
@@ -67,8 +68,11 @@
 
         // Handle incoming WebSocket messages
         socket.onmessage = function (event) {
-            var counterValue = JSON.parse(event.data).value;
+            values = JSON.parse(event.data);
+            var counterValue = values.value;
+            var refValue = values.refValue;
             document.getElementById("counter").textContent = counterValue;
+            document.getElementById("refCounter").textContent = refValue;
         };
 
         // Send an empty POST request to a server address
@@ -98,6 +102,7 @@
         <img src="/static/img/beans.jpg" alt="Beans">
     </div>
     <h1>Weight: <span id="counter">0</span> grams</h1>
+    <h1>Reference Weight: <span id="refCounter">0</span> grams</h1>
     <div class="button-container">
         <button onclick="sendPostRequest()">Tare</button>
     </div>

@@ -37,6 +37,7 @@ app.add_middleware(
 
 scale = Scale()
 cur_weight = 0
+ref_weight = 0
 scale_interval = 1 / 60
 update_interval = 1 / 30
 exit = False
@@ -44,12 +45,15 @@ tare_lock = threading.Lock()
 
 def scale_thread():
     global cur_weight
+    global ref_weight
     global exit
     global scale_interval
 
     while not exit:
         tare_lock.acquire()
-        cur_weight = round(scale.measure(), 2)
+        cur_weight, ref_weight = scale.measure()
+        cur_weight = round(cur_weight, 2)
+        ref_weight = round(ref_weight, 2)
         tare_lock.release()
         time.sleep(scale_interval)
 
@@ -84,7 +88,8 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while not exit:
             await websocket.send_text(json.dumps({
-                "value": cur_weight
+                "value": cur_weight,
+                "refValue": ref_weight
             }))
             await asyncio.sleep(update_interval)
     except WebSocketDisconnect:

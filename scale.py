@@ -12,11 +12,13 @@ class Scale:
         self.hx.tare()
 
         self.ref = False
+        self.ref_weight = 0.0
         self.frequency = 15
         self.weight_threshold = 1
 
     def tare(self):
         time.sleep(1)
+        self.ref_weight = self.weight()
         self.hx.set_reference_unit(435.224)
         self.hx.reset()
         self.hx.tare(self.frequency)
@@ -31,10 +33,10 @@ class Scale:
             self.tare()
             self.ref = False
             val = self.weight()
-        elif val > -self.weight_threshold and not self.ref:
+        elif val > self.weight_threshold and not self.ref:
             self.tare()
             self.ref = True
-        return val
+        return (val, self.ref_weight)
 
     def clean(self):
         import RPi.GPIO as GPIO
