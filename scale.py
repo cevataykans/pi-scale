@@ -15,11 +15,10 @@ class Scale:
         self.frequency = 15
 
     def tare(self):
-        time.sleep(0.1)
+        time.sleep(1)
         self.hx.set_reference_unit(435.224)
         self.hx.reset()
         self.hx.tare(self.frequency)
-        self.ref = True
 
     def weight(self):
         return self.hx.get_weight(self.frequency)
@@ -27,7 +26,7 @@ class Scale:
     def measure(self):
         self.hx.reset()
         val = self.weight()
-        if val < 0 and self.ref:
+        if val < -0.1 and self.ref:
             self.tare()
             self.ref = False
             val = self.weight()
