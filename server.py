@@ -14,6 +14,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
+version = "v2"
 
 folder = os.path.dirname(__file__)
 app.mount("/static", StaticFiles(directory= (folder + "/static").strip() ), name="static")
@@ -36,19 +37,21 @@ app.add_middleware(
 
 scale = Scale()
 cur_weight = 0
+scale_interval = 1 / 60
+update_interval = 1 / 30
 exit = False
 tare_lock = threading.Lock()
 
 def scale_thread():
     global cur_weight
     global exit
+    global scale_interval
+
     while not exit:
         tare_lock.acquire()
         cur_weight = round(scale.weight(), 2)
-        if cur_weight < 0:
-            cur_weight = 0
         tare_lock.release()
-        time.sleep(0.1)
+        time.sleep(scale_interval)
 
 thread = threading.Thread(target=scale_thread, name="Scale Thread")
 thread.start()
@@ -64,23 +67,25 @@ def shutdown_event():
 async def read_item(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/api/v1/tare")
+@app.post("/api/{}/tare".format(version))
 async def tare():
-    print("Tare...")
     tare_lock.acquire()
     scale.tare()
     tare_lock.release()
     return Response(content="Tare Success", media_type="application/text")
 
 from fastapi import WebSocket
-@app.websocket("/api/v1/ws")
+@app.websocket("/api/{}/ws".format(version))
 async def websocket_endpoint(websocket: WebSocket):
+    
+    global update_interval
+
     await websocket.accept()
     try:
         while not exit:
             await websocket.send_text(json.dumps({
                 "value": cur_weight
             }))
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(update_interval)
     except WebSocketDisconnect:
         print("Client disconnected")
