@@ -88,8 +88,8 @@
 
             socket.onclose = function (event) {
                 delete socket;
-                var newTimeout = Math.min(10000, timeout += timeout);
-                setTimeout(connect(newTimeout), timeout);
+                var curTimeout = Math.min(10000, timeout + timeout);
+                setTimeout(connect(curTimeout), curTimeout);
             }
 
             socket.onerror = function (err) {
