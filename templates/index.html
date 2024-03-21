@@ -63,7 +63,7 @@
     </style>
     <script>
         // Establish a WebSocket connection
-        var socket = new WebSocket("ws://192.168.0.17:8000/api/v1/ws");
+        var socket = new WebSocket("ws://192.168.0.17:8000/api/v2/ws");
 
         // Handle incoming WebSocket messages
         socket.onmessage = function (event) {
@@ -74,7 +74,7 @@
         // Send an empty POST request to a server address
         async function sendPostRequest() {
             console.log("sending req");
-            var json = await fetch("http://192.168.0.17:8000/api/v1/tare", { method: "POST" });
+            var json = await fetch("http://192.168.0.17:8000/api/v2/tare", { method: "POST" });
             console.log(json);
             var text = await json.text();
             showPopup(text);
@@ -87,7 +87,7 @@
 
             setTimeout(function () {
                 popup.style.display = "none";
-            }, 3000);
+            }, 2000);
         }
     </script>
 </head>

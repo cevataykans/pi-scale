@@ -6,3 +6,5 @@ Run the container with
 ```shell
 docker run --privileged -d -p 8000:8000 -e 8000 cevataykans/scale:latest
 ```
+
+> Ideal Coffee / water ratio I use is 24 grams of coffee to 500 ml water.
