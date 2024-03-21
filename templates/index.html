@@ -63,17 +63,40 @@
         }
     </style>
     <script>
-        // Establish a WebSocket connection
-        var socket = new WebSocket("ws://192.168.0.17:8000/api/v2/ws");
+        function showPopup(message) {
+            var popup = document.getElementById("popup");
+            popup.textContent = message;
+            popup.style.display = "block";
 
-        // Handle incoming WebSocket messages
-        socket.onmessage = function (event) {
-            values = JSON.parse(event.data);
-            var counterValue = values.value;
-            var refValue = values.refValue;
-            document.getElementById("counter").textContent = counterValue;
-            document.getElementById("refCounter").textContent = refValue;
-        };
+            setTimeout(function () {
+                popup.style.display = "none";
+            }, 2000);
+        }
+
+        function connect(timeout) {
+            // Establish a WebSocket connection
+            var socket = new WebSocket("ws://192.168.0.17:8000/api/v2/ws");
+
+            // Handle incoming WebSocket messages
+            socket.onmessage = function (event) {
+                values = JSON.parse(event.data);
+                var counterValue = values.value;
+                var refValue = values.refValue;
+                document.getElementById("counter").textContent = counterValue;
+                document.getElementById("refCounter").textContent = refValue;
+            };
+
+            socket.onclose = function (event) {
+                delete socket;
+                var newTimeout = Math.min(10000, timeout += timeout);
+                setTimeout(connect(newTimeout), timeout);
+            }
+
+            socket.onerror = function (err) {
+                console.error("Socket had an error: ", err.message, " Closing socket...");
+                socket.close();
+            }
+        }
 
         // Send an empty POST request to a server address
         async function sendPostRequest() {
@@ -84,15 +107,7 @@
             showPopup(text);
         }
 
-        function showPopup(message) {
-            var popup = document.getElementById("popup");
-            popup.textContent = message;
-            popup.style.display = "block";
-
-            setTimeout(function () {
-                popup.style.display = "none";
-            }, 2000);
-        }
+        connect(250);
     </script>
 </head>
 
@@ -101,8 +116,10 @@
     <div class="image-container">
         <img src="/static/img/beans.jpg" alt="Beans">
     </div>
-    <h1>Weight: <span id="counter">0</span> grams</h1>
-    <h1>Reference Weight: <span id="refCounter">0</span> grams</h1>
+    <div>
+        <h1>Current Weight: <span id="counter">0</span> grams</h1>
+        <h1>Reference Weight: <span id="refCounter">0</span> grams</h1>
+    </div>
     <div class="button-container">
         <button onclick="sendPostRequest()">Tare</button>
     </div>

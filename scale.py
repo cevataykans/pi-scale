@@ -33,6 +33,7 @@ class Scale:
             self.tare()
             self.ref = False
             val = self.weight()
+            self.ref_weight = 0
         elif val > self.weight_threshold and not self.ref:
             self.tare()
             self.ref = True
