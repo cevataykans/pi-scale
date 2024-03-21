@@ -77,6 +77,10 @@
             // Establish a WebSocket connection
             var socket = new WebSocket("ws://192.168.0.17:8000/api/v2/ws");
 
+            socket.onopen = function (event) {
+                timeout = 250;
+            }
+
             // Handle incoming WebSocket messages
             socket.onmessage = function (event) {
                 values = JSON.parse(event.data);
@@ -89,7 +93,6 @@
             socket.onclose = function (event) {
                 delete socket;
                 var curTimeout = Math.min(10000, timeout + timeout);
-                console.log("Timeout is: ", curTimeout);
                 setTimeout(connect, curTimeout, curTimeout);
             }
         }
